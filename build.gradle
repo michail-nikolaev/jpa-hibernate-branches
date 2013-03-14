@@ -1,0 +1,71 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+
+
+
+idea {
+    project {
+        jdkName = '1.7'
+        languageLevel = '1.7'
+        ipr {
+            withXml { provider ->
+                provider.node.component.find { it.@name == 'VcsDirectoryMappings' }.mapping.@vcs = 'Git'
+            }
+        }
+    }
+}
+
+sourceCompatibility = 1.7
+
+ext {
+    slf4jVersion = "1.7.2"
+    springVersion = "3.2.1.RELEASE"
+    logbackVersion = "1.0.9"
+    querydslVersion = "2.9.0"
+    hibernateVersion = "4.1.10.Final"
+    hibernateSearchVersion = "4.2.0.Final"
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+
+    repositories {
+        mavenCentral()
+    }
+
+    configurations {
+        all*.exclude group: "commons-logging", module: "commons-logging"
+    }
+
+    dependencies {
+
+        compile('javax.inject:javax.inject:1')
+
+        compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+        compile "org.slf4j:jul-to-slf4j:$slf4jVersion"
+
+        compile("ch.qos.logback:logback-classic:$logbackVersion")
+
+        testCompile group: 'junit', name: 'junit', version: '4.+'
+        testCompile group: 'org.springframework', name: 'spring-test', version: "$springVersion"
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            eachDependency { DependencyResolveDetails details ->
+                   //specifying a fixed version for all libraries with 'org.gradle' group
+	           if (details.requested.group == 'org.springframework') {
+	              details.useVersion "$springVersion"
+	           }
+           }
+        }
+    }
+
+
+
+    group = 'org.nkey.jpa.hibernate.branches'
+    version = '0.1-SNAPSHOT'
+
+}

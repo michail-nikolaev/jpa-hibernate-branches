@@ -1,0 +1,12 @@
+*.class
+
+#idea files
+*.iml
+*.ipr
+*.iws
+*.ids
+
+#gradle build dirs
+.gradle
+build
+generatedJava
