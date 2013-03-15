@@ -64,6 +64,7 @@ public class JpaHibernateConfiguration {
 
         Map<String, String> jpaPropertyMap = new HashMap<>();
         jpaPropertyMap.put("hibernate.hbm2ddl.auto", "create-drop");
+        jpaPropertyMap.put("hibernate.id.new_generator_mappings=true", "true");
 
         entityManagerFactory.setJpaPropertyMap(jpaPropertyMap);
 

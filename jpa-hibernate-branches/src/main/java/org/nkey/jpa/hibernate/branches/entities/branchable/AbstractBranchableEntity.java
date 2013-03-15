@@ -12,7 +12,7 @@ import javax.persistence.Version;
 @MappedSuperclass
 public class AbstractBranchableEntity implements IdentifiableEntity<BranchableEntityId> {
     @EmbeddedId
-    private BranchableEntityId id;
+    private BranchableEntityId id = new BranchableEntityId();
 
     @Version
     private Long version;

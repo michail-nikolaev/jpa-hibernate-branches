@@ -3,6 +3,7 @@ package org.nkey.jpa.hibernate.branches.repository;
 import org.junit.Test;
 import org.nkey.jpa.hibernate.branches.SpringTestBase;
 import org.nkey.jpa.hibernate.branches.entities.basic.UserEntity;
+import org.nkey.jpa.hibernate.branches.entities.branchable.ProjectEntity;
 import org.nkey.jpa.hibernate.branches.repositories.ProjectRepository;
 import org.nkey.jpa.hibernate.branches.repositories.SourceFileRepository;
 import org.nkey.jpa.hibernate.branches.repositories.UserRepository;
@@ -43,6 +44,17 @@ public class RepositoryTest extends SpringTestBase {
 
 
         userRepository.delete(userEntity);
+    }
 
+    @Test
+    public void projectRepositoryTest() {
+        ProjectEntity projectEntity = new ProjectEntity();
+        projectEntity.setProjectName("jpa-hibernate-branches");
+        projectEntity.getId().setBranchName("master");
+
+        projectEntity = projectRepository.saveAndFlush(projectEntity);
+        assertNotNull(projectEntity);
+        assertNotNull(projectEntity.getId().getLogicalId());
+        assertNotNull(projectEntity.getId().getBranchName());
     }
 }

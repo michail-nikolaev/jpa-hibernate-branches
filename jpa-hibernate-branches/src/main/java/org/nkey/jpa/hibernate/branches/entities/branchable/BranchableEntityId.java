@@ -2,9 +2,11 @@ package org.nkey.jpa.hibernate.branches.entities.branchable;
 
 import com.google.common.base.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -13,9 +15,22 @@ import java.io.Serializable;
 @Embeddable
 public class BranchableEntityId implements Serializable {
     // hibernate only feature
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long logicalId;
+    @Column
     private String branchName;
+
+    public BranchableEntityId(Long logicalId, String branchName) {
+        this.logicalId = logicalId;
+        this.branchName = branchName;
+    }
+
+    public BranchableEntityId(String branchName) {
+        this.branchName = branchName;
+    }
+
+    public BranchableEntityId() {}
 
     public String getBranchName() {
         return branchName;
