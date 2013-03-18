@@ -1,8 +1,11 @@
 package org.nkey.jpa.hibernate.branches.entities.branchable;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.nkey.jpa.hibernate.branches.entities.IdentifiableEntity;
+import org.nkey.jpa.hibernate.branches.entities.generator.GeneratorDeclareEntity;
 
 import javax.persistence.EmbeddedId;
+import javax.persistence.GeneratedValue;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
@@ -11,7 +14,9 @@ import javax.persistence.Version;
  */
 @MappedSuperclass
 public class AbstractBranchableEntity implements IdentifiableEntity<BranchableEntityId> {
-    @EmbeddedId
+    public static final String GENERATOR_NAME = "seq_id";
+    @GenericGenerator(name = GENERATOR_NAME,
+            strategy = GeneratorDeclareEntity.GENERATOR_CLASS) @GeneratedValue(generator = GENERATOR_NAME) @EmbeddedId
     private BranchableEntityId id = new BranchableEntityId();
 
     @Version
