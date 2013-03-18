@@ -1,12 +1,16 @@
 package org.nkey.jpa.hibernate.branches.entities.branchable;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.FieldBridge;
 import org.nkey.jpa.hibernate.branches.entities.IdentifiableEntity;
+import org.nkey.jpa.hibernate.branches.entities.generator.BranchableEntityIdBridge;
 import org.nkey.jpa.hibernate.branches.entities.generator.GeneratorDeclareEntity;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.GeneratedValue;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 /**
@@ -17,6 +21,8 @@ public class AbstractBranchableEntity implements IdentifiableEntity<BranchableEn
     public static final String GENERATOR_NAME = "seq_id";
     @GenericGenerator(name = GENERATOR_NAME,
             strategy = GeneratorDeclareEntity.GENERATOR_CLASS) @GeneratedValue(generator = GENERATOR_NAME) @EmbeddedId
+
+    @DocumentId(name = "id") @FieldBridge(impl = BranchableEntityIdBridge.class)
     private BranchableEntityId id = new BranchableEntityId();
 
     @Version
@@ -39,4 +45,14 @@ public class AbstractBranchableEntity implements IdentifiableEntity<BranchableEn
     public void setVersion(Long version) {
         this.version = version;
     }
+
+    @Transient
+    public String getEntityBranchName() {
+        return id == null ? null : id.getBranchName();
+    }
+
+    public Long getEntityLogicalId() {
+        return id == null ? null : id.getLogicalId();
+    }
+
 }

@@ -46,4 +46,5 @@ public class UserEntity extends AbstractEntity {
     public void setProjects(Set<ProjectEntity> projects) {
         this.projects = projects;
     }
+
 }

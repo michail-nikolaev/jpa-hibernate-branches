@@ -48,13 +48,40 @@ public class RepositoryTest extends SpringTestBase {
 
     @Test
     public void projectRepositoryTest() {
-        ProjectEntity projectEntity = new ProjectEntity();
-        projectEntity.setProjectName("jpa-hibernate-branches");
-        projectEntity.getId().setBranchName("master");
+        ProjectEntity projectMaster = new ProjectEntity();
+        projectMaster.setProjectName("jpa-hibernate-branches");
+        projectMaster.getId().setBranchName("master");
 
-        projectEntity = projectRepository.saveAndFlush(projectEntity);
-        assertNotNull(projectEntity);
-        assertNotNull(projectEntity.getId().getLogicalId());
-        assertNotNull(projectEntity.getId().getBranchName());
+        projectMaster = projectRepository.saveAndFlush(projectMaster);
+        assertNotNull(projectMaster);
+        assertNotNull(projectMaster.getId().getLogicalId());
+        assertNotNull(projectMaster.getId().getBranchName());
+        assertEquals(0, projectMaster.getVersion().longValue());
+
+        ProjectEntity projectDev = new ProjectEntity();
+        projectDev.setProjectName("jpa-hibernate-branches");
+        projectDev.getId().setBranchName("dev");
+        projectDev.getId().setLogicalId(projectMaster.getEntityLogicalId());
+
+
+        projectDev = projectRepository.saveAndFlush(projectDev);
+        assertNotNull(projectDev);
+        assertNotNull(projectDev.getId().getLogicalId());
+        assertNotNull(projectDev.getId().getBranchName());
+
+        assertEquals(projectMaster.getEntityLogicalId(), projectDev.getEntityLogicalId());
+
+
+        projectMaster.setProjectName("updated");
+        projectMaster = projectRepository.saveAndFlush(projectMaster);
+        assertEquals(1, projectMaster.getVersion().longValue());
+
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername("username");
+
+        userRepository.delete(userEntity);
+        projectRepository.delete(projectMaster);
+        projectRepository.delete(projectDev);
+
     }
 }

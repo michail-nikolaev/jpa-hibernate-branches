@@ -1,5 +1,7 @@
 package org.nkey.jpa.hibernate.branches.entities.branchable;
 
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 import org.nkey.jpa.hibernate.branches.entities.basic.UserEntity;
 
 import javax.persistence.Column;
@@ -15,8 +17,9 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "projects")
+@Indexed
 public class ProjectEntity extends AbstractBranchableEntity {
-    @Column(nullable = false)
+    @Field @Column(nullable = false)
     private String projectName;
     @ManyToMany
     private Set<UserEntity> users = new HashSet<>();
