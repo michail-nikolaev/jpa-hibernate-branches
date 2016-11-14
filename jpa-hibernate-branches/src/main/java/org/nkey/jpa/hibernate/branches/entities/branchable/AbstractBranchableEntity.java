@@ -18,11 +18,14 @@ import javax.persistence.Version;
  */
 @MappedSuperclass
 public class AbstractBranchableEntity implements IdentifiableEntity<BranchableEntityId> {
+    
     public static final String GENERATOR_NAME = "seq_id";
-    @GenericGenerator(name = GENERATOR_NAME,
-            strategy = GeneratorDeclareEntity.GENERATOR_CLASS) @GeneratedValue(generator = GENERATOR_NAME) @EmbeddedId
-
-    @DocumentId(name = "id") @FieldBridge(impl = BranchableEntityIdBridge.class)
+    
+    @GenericGenerator(name = GENERATOR_NAME, strategy = GeneratorDeclareEntity.GENERATOR_CLASS) 
+    @GeneratedValue(generator = GENERATOR_NAME) 
+    @EmbeddedId
+    @DocumentId(name = "id") 
+    @FieldBridge(impl = BranchableEntityIdBridge.class)
     private BranchableEntityId id = new BranchableEntityId();
 
     @Version
